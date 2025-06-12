@@ -19,10 +19,11 @@ export function useFormStorage() {
     const validChildren = children.value.filter(c =>
       c.name.trim() !== '' && typeof c.age === 'number' && c.age >= 0 && c.age <= 100
     )
-    localStorage.setItem(STORAGE_KEY, JSON.stringify({ parent: parent.value, children: validChildren }))
+    localStorage.setItem(STORAGE_KEY, JSON.stringify({
+      parent: parent.value,
+      children: validChildren
+    }))
   }
-
-
 
   load()
 
