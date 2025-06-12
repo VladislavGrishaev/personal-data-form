@@ -28,6 +28,7 @@ html {
   overflow-y: scroll;
 }
 body {
+  min-width: 320px;
   min-height: 100vh;
   margin: 0;
   font: 16px/24px Montserrat, sans-serif;

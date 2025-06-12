@@ -5,7 +5,7 @@
 <template>
 		<header class="header">
 				<div class="header__logo">
-						<img src="../../../assets/images/logo.png" width="93" height="29" alt="Logo">
+						<img src="../../../assets/images/logo.svg" alt="Logo">
 				</div>
 				<nav class="header__nav">
 						<router-link

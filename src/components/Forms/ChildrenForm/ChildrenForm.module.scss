@@ -51,3 +51,21 @@
     }
   }
 }
+
+@media screen and (max-width: 767px) {
+  .childs-info {
+    &__head {
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    &__label {
+      width: 100%;
+    }
+
+    &__child-wrap {
+      flex-direction: column;
+      gap: 10px;
+    }
+  }
+}
