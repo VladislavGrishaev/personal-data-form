@@ -1,10 +1,6 @@
 <script setup>
 import { toRef } from 'vue'
-import { useFormValidation } from "../../../composables/useFormValidation.js"
-
-
-const name = defineModel('name')
-const age = defineModel('age')
+import { useFormValidation } from '../../../composables/useFormValidation.js'
 
 const props = defineProps({
   invalid: {
@@ -13,12 +9,13 @@ const props = defineProps({
   }
 })
 
+const name = defineModel('name')
+const age  = defineModel('age')
+
 const { usePersonErrors } = useFormValidation()
-const { nameError, ageError } = usePersonErrors(
-  toRef({ name }, 'name'),
-  toRef({ age }, 'age'),
-  toRef(props, 'invalid')
-)
+const invalidRef = toRef(props, 'invalid')
+
+const { nameError, ageError } = usePersonErrors(name, age, invalidRef)
 </script>
 
 <template>
