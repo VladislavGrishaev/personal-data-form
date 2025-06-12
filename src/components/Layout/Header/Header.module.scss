@@ -1,0 +1,37 @@
+.header {
+    position: sticky;
+    top: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 28px 15px 24px 15px;
+    box-shadow: 0 1px 0 0 rgba(17, 17, 17, 0.1);
+    background: #fff;
+
+    &__logo {
+        position: absolute;
+        top: 50%;
+        left: 92px;
+        transform: translateY(-50%);
+    }
+
+    &__nav-link {
+        font: 400 14px/24px Montserrat, sans-serif;
+        text-decoration: none;
+        color: rgba(17, 17, 17, 0.48);
+
+        &:hover:not(.router-link-exact-active) {
+            text-decoration: underline;
+            color: #01a7fd;
+        }
+
+        & + & {
+            margin-left: 24px;
+        }
+
+        &.router-link-exact-active {
+            color: #01a7fd;
+        }
+    }
+
+}

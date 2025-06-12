@@ -1,0 +1,53 @@
+.childs-info {
+  &__form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin: 0 0 30px 0;
+  }
+
+  &__head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  &__child-wrap {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+  }
+
+  &__add-child {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    padding: 10px 20px;
+    border: 2px solid #01a7fd;
+    border-radius: 100px;
+    cursor: pointer;
+    background-color: #fff;
+    font: 400 14px/24px 'Montserrat', sans-serif;
+    color: #01a7fd;
+
+    &::before {
+      content: '';
+      display: block;
+      width: 18px;
+      height: 18px;
+      background: url("data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2016.02%2016.02%22%3E%3Cpath%20d%3D%22M2.13%2C7.86a1.14%2C1.14%2C0%2C0%2C0%2C0%2C2.28H7.86v5.73a1.14%2C1.14%2C0%2C1%2C0%2C2.28%2C0V10.14h5.73a1.14%2C1.14%2C0%2C0%2C0%2C0-2.28H10.14V2.13a1.14%2C1.14%2C0%2C0%2C0-2.28%2C0V7.86Z%22%20transform%3D%22translate(-0.99%20-0.99)%22%20style%3D%22fill%3A%2301a7fd%3Bfill-rule%3Aevenodd%22%2F%3E%3C%2Fsvg%3E") no-repeat;
+    }
+  }
+
+  &__remove-child {
+    padding: 0;
+    cursor: pointer;
+    background-color: #fff;
+    font: 400 14px/24px 'Montserrat', sans-serif;
+    color: #01a7fd;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+}
