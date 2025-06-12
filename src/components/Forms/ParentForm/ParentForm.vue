@@ -1,14 +1,24 @@
 <script setup>
-defineProps({
-  name: String,
-  age: Number,
+import { toRef } from 'vue'
+import { useFormValidation } from "../../../composables/useFormValidation.js"
+
+
+const name = defineModel('name')
+const age = defineModel('age')
+
+const props = defineProps({
   invalid: {
     type: Boolean,
     default: false
   }
 })
 
-defineEmits(['update:name', 'update:age'])
+const { usePersonErrors } = useFormValidation()
+const { nameError, ageError } = usePersonErrors(
+  toRef({ name }, 'name'),
+  toRef({ age }, 'age'),
+  toRef(props, 'invalid')
+)
 </script>
 
 <template>
@@ -17,27 +27,22 @@ defineEmits(['update:name', 'update:age'])
 
 				<div class="user-info__form">
 						<label class="user-info__label label-form">
-						<span class="user-info__title-field title-field">
-								Имя
-						</span>
+								<span class="user-info__title-field title-field">Имя</span>
 								<input
-												@input="$emit('update:name', $event.target.value)"
-												:value="name"
+												v-model="name"
 												type="text"
-												:class="{ 'active-error': invalid && name.trim() === '' }"
+												:class="{ 'active-error': nameError }"
 												class="user-info__input input-form"
 												name="name"
 								/>
 						</label>
+
 						<label class="user-info__label label-form">
-						<span class="user-info__title-field title-field">
-								Возраст
-						</span>
+								<span class="user-info__title-field title-field">Возраст</span>
 								<input
-												@input="$emit('update:age', Number($event.target.value))"
-												:value="age"
+												v-model.number="age"
 												type="number"
-												:class="{ 'active-error': invalid && (name.trim() === '' || typeof age !== 'number' || age < 0 || age > 100) }"
+												:class="{ 'active-error': ageError }"
 												class="user-info__input input-form"
 												name="age"
 								/>

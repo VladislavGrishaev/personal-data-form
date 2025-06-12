@@ -1,15 +1,16 @@
 <script setup>
 import { ref } from 'vue'
 import { useFormStorage } from '../../../composables/useFormStorage.js'
+import { useFormValidation } from '../../../composables/useFormValidation.js'
 import ParentForm from '../ParentForm/ParentForm.vue'
 import ChildrenForm from '../ChildrenForm/ChildrenForm.vue'
 
 defineOptions({ name: 'FormPage' })
 const { parent, children, save } = useFormStorage()
+const { isPersonValid, arePeopleValid } = useFormValidation()
 const showErrors = ref(false)
 const isSaved = ref(false)
 let saveMessageTimeout = null
-
 
 function markChildrenTouched() {
   children.value.forEach(c => {
@@ -17,32 +18,15 @@ function markChildrenTouched() {
   })
 }
 
-
 function onSaveClick() {
   showErrors.value = true
   isSaved.value = false
 
   markChildrenTouched()
-
-  const isParentValid =
-    parent.value.name.trim() !== '' &&
-    typeof parent.value.age === 'number' &&
-    parent.value.age >= 0 &&
-    parent.value.age <= 100
-
-  const areChildrenValid = children.value.every(c =>
-    c.name.trim() !== '' &&
-    typeof c.age === 'number' &&
-    c.age >= 0 &&
-    c.age <= 100
-  )
-
-  if (!isParentValid || !areChildrenValid) {
+  if (!isPersonValid(parent.value) || !arePeopleValid(children.value)) {
     return
   }
-
-  save() // сохраняем в localStorage только здесь
-
+  save()
   isSaved.value = true
 
   clearTimeout(saveMessageTimeout)
@@ -50,8 +34,6 @@ function onSaveClick() {
     isSaved.value = false
   }, 1500)
 }
-
-
 </script>
 
 <template>

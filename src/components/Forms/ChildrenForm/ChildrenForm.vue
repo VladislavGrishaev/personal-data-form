@@ -1,6 +1,7 @@
 <script setup>
 import { ref } from 'vue'
-import {useChildrenStorage} from "../../../composables/useChildrenStorage.js";
+import { useChildrenStorage } from "../../../composables/useChildrenStorage.js"
+import { useFormValidation } from "../../../composables/useFormValidation.js"
 
 const props = defineProps({
   children: Array,
@@ -18,6 +19,8 @@ function setInputRef(el, index) {
 }
 
 const { addChild, removeChild } = useChildrenStorage(() => props.children, emit)
+const { validatePerson } = useFormValidation()
+
 </script>
 
 
@@ -49,7 +52,7 @@ const { addChild, removeChild } = useChildrenStorage(() => props.children, emit)
 														@input="child.touched = true"
 														:ref="el => setInputRef(el, index)"
 														type="text"
-														:class="{ 'active-error': invalid && child.touched && child.name.trim() === '' }"
+														:class="{ 'active-error': invalid && child.touched && !validatePerson(child).validName }"
 														class="childs-info__input input-form"
 														name="name"
 										/>
@@ -63,7 +66,7 @@ const { addChild, removeChild } = useChildrenStorage(() => props.children, emit)
 														v-model.number="child.age"
 														@input="child.touched = true"
 														type="number"
-														:class="{ 'active-error': invalid && child.touched && (typeof child.age !== 'number' || child.age < 0 || child.age > 100) }"
+														:class="{ 'active-error': invalid && child.touched && !validatePerson(child).validAge }"
 														class="childs-info__input input-form"
 														name="age"
 										/>

@@ -1,37 +1,41 @@
-import {computed} from "vue";
+import { computed } from "vue";
 
 export function useFormValidation() {
+  function validatePerson({ name, age }) {
+    const validName = typeof name === 'string' && name.trim() !== '';
+    const validAge = typeof age === 'number' && age >= 0 && age <= 100;
+    return {
+      validName,
+      validAge,
+      isValid: validName && validAge
+    };
+  }
+
   function isPersonValid(person) {
-    return (
-      typeof person.name === 'string' &&
-      person.name.trim() !== '' &&
-      typeof person.age === 'number' &&
-      person.age >= 0 &&
-      person.age <= 100
-    )
+    return validatePerson(person).isValid;
   }
 
   function arePeopleValid(peopleArray) {
-    return Array.isArray(peopleArray) && peopleArray.every(isPersonValid)
+    return Array.isArray(peopleArray) && peopleArray.every(isPersonValid);
   }
 
   function usePersonErrors(nameRef, ageRef, invalidRef) {
-    const nameError = computed(() => invalidRef.value && nameRef.value.trim() === '')
-    const ageError = computed(() =>
-      invalidRef.value &&
-      (
-        nameRef.value.trim() === '' ||
-        typeof ageRef.value !== 'number' ||
-        ageRef.value < 0 ||
-        ageRef.value > 100
-      )
-    )
-    return { nameError, ageError }
+    return {
+      nameError: computed(() => {
+        if (!invalidRef.value) return false;
+        return !validatePerson({ name: nameRef.value, age: ageRef.value }).validName;
+      }),
+      ageError: computed(() => {
+        if (!invalidRef.value) return false;
+        return !validatePerson({ name: nameRef.value, age: ageRef.value }).validAge;
+      })
+    };
   }
 
   return {
+    validatePerson,
     isPersonValid,
     arePeopleValid,
     usePersonErrors
-  }
+  };
 }
