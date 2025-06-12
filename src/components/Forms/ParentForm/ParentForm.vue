@@ -1,6 +1,7 @@
 <script setup>
 import { toRef } from 'vue'
 import { useFormValidation } from '../../../composables/useFormValidation.js'
+import { useInputLimiter } from '../../../composables/useInputLimiter.js'
 
 const props = defineProps({
   invalid: {
@@ -12,11 +13,13 @@ const props = defineProps({
 const name = defineModel('name')
 const age  = defineModel('age')
 
-const { usePersonErrors } = useFormValidation()
 const invalidRef = toRef(props, 'invalid')
-
+const { usePersonErrors } = useFormValidation()
 const { nameError, ageError } = usePersonErrors(name, age, invalidRef)
+
+const { onInput: onAgeInput } = useInputLimiter(age, { maxLength: 3 })
 </script>
+
 
 <template>
 		<div class="user-info">
@@ -37,8 +40,9 @@ const { nameError, ageError } = usePersonErrors(name, age, invalidRef)
 						<label class="user-info__label label-form">
 								<span class="user-info__title-field title-field">Возраст</span>
 								<input
-												v-model.number="age"
-												type="number"
+												v-model="age"
+												type="text"
+												@input="onAgeInput"
 												:class="{ 'active-error': ageError }"
 												class="user-info__input input-form"
 												name="age"
