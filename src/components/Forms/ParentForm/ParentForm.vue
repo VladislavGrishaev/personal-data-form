@@ -1,7 +1,11 @@
 <script setup>
 defineProps({
   name: String,
-  age: Number
+  age: Number,
+  invalid: {
+    type: Boolean,
+    default: false
+  }
 })
 
 defineEmits(['update:name', 'update:age'])
@@ -20,7 +24,7 @@ defineEmits(['update:name', 'update:age'])
 												@input="$emit('update:name', $event.target.value)"
 												:value="name"
 												type="text"
-												:class="{ 'active-error': name.trim() === '' }"
+												:class="{ 'active-error': invalid && name.trim() === '' }"
 												class="user-info__input input-form"
 												name="name"
 								/>
@@ -33,7 +37,7 @@ defineEmits(['update:name', 'update:age'])
 												@input="$emit('update:age', Number($event.target.value))"
 												:value="age"
 												type="number"
-												:class="{ 'active-error': age < 0 || age > 100 }"
+												:class="{ 'active-error': invalid && (name.trim() === '' || typeof age !== 'number' || age < 0 || age > 100) }"
 												class="user-info__input input-form"
 												name="age"
 								/>

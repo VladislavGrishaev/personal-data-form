@@ -1,0 +1,27 @@
+.preview-info {
+  &__title {
+    margin: 0 0 20px 0;
+  }
+
+  &__info-user {
+    margin: 0 0 60px 0;
+  }
+
+  &__text, &__item {
+    font: 700 16px/24px 'Montserrat-Bold', sans-serif;
+  }
+
+  &__list {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    align-items: flex-start;
+  }
+
+  &__item {
+    display: block;
+    border-radius: 5px;
+    padding: 10px 20px;
+    background: #f1f1f1;
+  }
+}

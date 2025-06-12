@@ -1,37 +1,75 @@
 <script setup>
-defineOptions({ name: 'FormPage' })
-import { useRouter } from 'vue-router'
+import { ref } from 'vue'
 import { useFormStorage } from '../../../composables/useFormStorage.js'
 import ParentForm from '../ParentForm/ParentForm.vue'
 import ChildrenForm from '../ChildrenForm/ChildrenForm.vue'
 
-const router = useRouter()
+defineOptions({ name: 'FormPage' })
 const { parent, children, save } = useFormStorage()
+const showErrors = ref(false)
+const isSaved = ref(false)
+let saveMessageTimeout = null
 
-function goToPreview() {
-  const isParentValid = parent.value.name.trim() !== '' && parent.value.age >= 0 && parent.value.age <= 100
-  const areChildrenValid = children.value.every(c => c.name.trim() !== '' && typeof c.age === 'number' && c.age >= 0 && c.age <= 100)
+
+function markChildrenTouched() {
+  children.value.forEach(c => {
+    c.touched = true
+  })
+}
+
+
+function onSaveClick() {
+  showErrors.value = true
+  isSaved.value = false
+
+  markChildrenTouched()
+
+  const isParentValid =
+    parent.value.name.trim() !== '' &&
+    typeof parent.value.age === 'number' &&
+    parent.value.age >= 0 &&
+    parent.value.age <= 100
+
+  const areChildrenValid = children.value.every(c =>
+    c.name.trim() !== '' &&
+    typeof c.age === 'number' &&
+    c.age >= 0 &&
+    c.age <= 100
+  )
 
   if (!isParentValid || !areChildrenValid) {
-    alert('Проверьте правильность ввода данных: возраст от 0 до 100, имя не должно быть пустым')
     return
   }
 
-  save()
-  router.push('/preview')
+  save() // сохраняем в localStorage только здесь
+
+  isSaved.value = true
+
+  clearTimeout(saveMessageTimeout)
+  saveMessageTimeout = setTimeout(() => {
+    isSaved.value = false
+  }, 1500)
 }
+
+
 </script>
 
 <template>
 		<div class="form-layout">
 				<ParentForm
 								v-model:name="parent.name"
-								v-model:age="parent.age" />
+								v-model:age="parent.age"
+								:invalid="showErrors"
+				/>
 				<ChildrenForm
-								v-model:children="children" />
+								v-model:children="children"
+								:invalid="showErrors"
+				/>
+
+				<span v-if="isSaved" class="active-valid">Данные успешно сохранены</span>
 
 				<button
-								@click="goToPreview"
+								@click="onSaveClick"
 								type="button"
 								class="form-layout__save-data"
 				>Сохранить

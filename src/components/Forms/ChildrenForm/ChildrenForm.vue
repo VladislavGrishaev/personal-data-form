@@ -1,8 +1,13 @@
 <script setup>
-import {nextTick, ref, watch} from 'vue'
+import { ref } from 'vue'
+import {useChildrenStorage} from "../../../composables/useChildrenStorage.js";
 
 const props = defineProps({
-  children: Array
+  children: Array,
+  invalid: {
+    type: Boolean,
+    default: false
+  }
 })
 
 const emit = defineEmits(['update:children'])
@@ -12,27 +17,16 @@ function setInputRef(el, index) {
   if (el) inputRefs.value[index] = el
 }
 
-function addChild() {
-  const newChildren = [...props.children, {id: Date.now() + Math.random(), name: '', age: null}]
-  emit('update:children', newChildren)
-  nextTick(() => {
-    const lastInput = inputRefs.value[newChildren.length - 1]
-    lastInput?.focus()
-  })
-}
-
-function removeChild(id) {
-  const updated = props.children.filter(child => child.id !== id)
-  emit('update:children', updated)
-}
+const { addChild, removeChild } = useChildrenStorage(() => props.children, emit)
 </script>
+
 
 <template>
 		<div class="childs-info">
 
 				<div class="childs-info__form">
 						<div class="childs-info__head">
-							<h3 class="childs-info__title">Дети (макс. 5)</h3>
+							<h2 class="childs-info__title">Дети (макс. 5)</h2>
 								<button
 												v-if="children.length < 5"
 												@click="addChild"
@@ -52,9 +46,10 @@ function removeChild(id) {
 										</span>
 										<input
 														v-model="child.name"
+														@input="child.touched = true"
 														:ref="el => setInputRef(el, index)"
 														type="text"
-														:class="{ 'active-error': child.name.trim() === '' }"
+														:class="{ 'active-error': invalid && child.touched && child.name.trim() === '' }"
 														class="childs-info__input input-form"
 														name="name"
 										/>
@@ -66,8 +61,9 @@ function removeChild(id) {
 										</span>
 										<input
 														v-model.number="child.age"
+														@input="child.touched = true"
 														type="number"
-														:class="{ 'active-error': child.age < 0 || child.age > 100 }"
+														:class="{ 'active-error': invalid && child.touched && (typeof child.age !== 'number' || child.age < 0 || child.age > 100) }"
 														class="childs-info__input input-form"
 														name="age"
 										/>

@@ -10,6 +10,12 @@
   font-weight: 500;
   font-style: normal;
 }
+@font-face {
+  font-family: 'Montserrat-Bold';
+  src: url('../fonts/Montserrat-Bold.ttf') format('truetype');
+  font-weight: 700;
+  font-style: normal;
+}
 
 
 *, *::before, *::after {
@@ -49,8 +55,20 @@ input.active-error {
   border: 1px solid red;
 }
 
+.active-valid {
+  position: absolute;
+  bottom: 45px;
+  width: 100%;
+  text-align: center;
+  color: green;
+}
+
 h1, h2, h3, h4, h5, h6, p {
   margin: 0;
+}
+
+h2 {
+  font: 500 16px/24px 'Montserrat-Medium', sans-serif;
 }
 
 hr {
@@ -211,4 +229,10 @@ template {
 }
 [hidden] {
   display: none;
+}
+
+ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
 }
