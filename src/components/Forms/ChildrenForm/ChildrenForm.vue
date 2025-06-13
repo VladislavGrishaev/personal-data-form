@@ -12,7 +12,7 @@ const props = defineProps({
   }
 })
 
-const emit = defineEmits(['update:children'])
+const emit = defineEmits(['update:children', 'children:changed'])
 const inputRefs = ref([])
 
 function setInputRef(el, index) {

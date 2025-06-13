@@ -18,6 +18,14 @@ function markChildrenTouched() {
   })
 }
 
+function showSavedMessage() {
+  isSaved.value = true
+  clearTimeout(saveMessageTimeout)
+  saveMessageTimeout = setTimeout(() => {
+    isSaved.value = false
+  }, 1500)
+}
+
 function onSaveClick() {
   showErrors.value = true
   isSaved.value = false
@@ -27,12 +35,7 @@ function onSaveClick() {
     return
   }
   save()
-  isSaved.value = true
-
-  clearTimeout(saveMessageTimeout)
-  saveMessageTimeout = setTimeout(() => {
-    isSaved.value = false
-  }, 1500)
+  showSavedMessage()
 }
 </script>
 
@@ -46,6 +49,7 @@ function onSaveClick() {
 				<ChildrenForm
 								v-model:children="children"
 								:invalid="showErrors"
+								@children:changed="showSavedMessage"
 				/>
 
 				<span v-if="isSaved" class="active-valid">Данные успешно сохранены</span>

@@ -27,6 +27,7 @@ export function useChildrenStorage(getChildren, emit) {
   function removeChild(id) {
     const updated = getChildren().filter(c => c.id !== id)
     emit('update:children', updated)
+    emit('children:changed')
 
     const validForStorage = updated.filter(child => {
       const { validName, validAge } = validatePerson(child)
