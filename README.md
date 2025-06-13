@@ -1,5 +1,19 @@
-# Vue 3 + Vite
+## Требования к окружению
 
-This template should help get you started developing with Vue 3 in Vite. The template uses Vue 3 `<script setup>` SFCs, check out the [script setup docs](https://v3.vuejs.org/api/sfc-script-setup.html#sfc-script-setup) to learn more.
+Разработка велась на следующих версиях:
 
-Learn more about IDE Support for Vue in the [Vue Docs Scaling up Guide](https://vuejs.org/guide/scaling-up/tooling.html#ide-support).
+- **Node.js**: `20.11.1`
+- **npm**: `10.2.4`
+
+## Установка зависимостей
+
+```bash
+npm install
+```
+
+## Запуск приложения
+
+```bash
+npm run dev
+```
+
