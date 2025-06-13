@@ -1,5 +1,5 @@
 <script setup>
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
 import { useFormStorage } from '../../../composables/useFormStorage.js'
 import { useFormValidation } from '../../../composables/useFormValidation.js'
 import ParentForm from '../ParentForm/ParentForm.vue'
@@ -11,6 +11,8 @@ const { isPersonValid, arePeopleValid } = useFormValidation()
 const showErrors = ref(false)
 const isSaved = ref(false)
 let saveMessageTimeout = null
+let lastSavedChildren = ''
+let lastSavedParent = ''
 
 function markChildrenTouched() {
   children.value.forEach(c => {
@@ -19,6 +21,16 @@ function markChildrenTouched() {
 }
 
 function showSavedMessage() {
+  const validChildren = children.value.filter(c => isPersonValid(c))
+  const serializedChildren = JSON.stringify(validChildren)
+  const serializedParent = JSON.stringify(parent.value)
+
+  if (serializedChildren === lastSavedChildren && serializedParent === lastSavedParent) return
+
+  save()
+  lastSavedChildren = serializedChildren
+  lastSavedParent = serializedParent
+
   isSaved.value = true
   clearTimeout(saveMessageTimeout)
   saveMessageTimeout = setTimeout(() => {
@@ -34,9 +46,13 @@ function onSaveClick() {
   if (!isPersonValid(parent.value) || !arePeopleValid(children.value)) {
     return
   }
-  save()
   showSavedMessage()
 }
+
+onMounted(() => {
+  lastSavedChildren = JSON.stringify(children.value.filter(c => isPersonValid(c)))
+  lastSavedParent = JSON.stringify(parent.value)
+})
 </script>
 
 <template>
